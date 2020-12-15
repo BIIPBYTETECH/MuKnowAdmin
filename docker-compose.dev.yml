@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  webserver:
+    hostname: 'devadmin.muknow.com'
+    ports:
+      - 8081:80
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: 'phpmyadmin-service'
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - '8080:80'
+    volumes: 
+      - /sessions
+  

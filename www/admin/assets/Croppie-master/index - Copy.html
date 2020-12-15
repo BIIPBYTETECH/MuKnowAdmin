@@ -1,0 +1,186 @@
+<!DOCTYPE html> 
+<html lang ="en">
+    <head>
+        <meta charset="UTF-8" >
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Croppie - a simple javascript image cropper - Foliotek</title>
+
+        <meta name="description" content="Croppie is an easy to use javascript image cropper.">
+
+        <meta property="og:title" content="Croppie - a javascript image cropper">
+        <meta property="og:type" content="website">
+		
+		        <link rel="Stylesheet" type="text/css" href="https://rawgit.com/Foliotek/Croppie/master/croppie.css" />
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+      
+	          <script src="https://rawgit.com/Foliotek/Croppie/master/croppie.js"></script>
+
+	  
+    </head>
+    <body>
+     
+<div class="upload-demo">
+                        <input type="file" id="upload" value="Choose a file" accept="image/*" data-role="none"/>
+
+                        
+                        <div class="col-1-2" style="margin: 0 auto;display:table;">
+                            <div class="upload-msg">
+                                Click to upload a title image
+                            </div>
+							
+                            <div id="upload-demo"></div>
+							<div class="buttons" style="margin:0 auto;display:table;">
+							<button id="btn" class="upload-result" data-role="none">Use This Image</button>
+							<button id="btn" class="reset" data-role="none" style="margin-left:5px;">Remove Image</button>
+							</div>
+                        </div>
+</div>
+
+<h2>Imagen muestra</h2>
+<img id="img_sample" src="" style="max-width:200px" />
+
+
+
+
+
+
+
+	 </body>
+	 <script>
+	 $(function() {
+
+  $(".upload-msg").click(function() {
+    $("#upload").click();
+  })
+
+  ////this works but wont let me set a new readFile input
+  $(".reset").click(function() {
+
+    $('.upload-demo').removeClass('ready');
+    $("#upload-demo").html("");
+    $uploadCrop = null;
+
+    $uploadCrop = $('#upload-demo').croppie({
+      viewport: {
+        width: 146,
+        height: 146,
+        type: 'square'
+      },
+      boundary: {
+        width: 300,
+        height: 300
+      },
+    });
+
+  })
+
+  function popupResult(result) {
+    var html;
+    if (result.html) {
+      html = result.html;
+    }
+    if (result.src) {
+      html = '<img src="' + result.src + '" />';
+    }
+    $("#result").html(html);
+  }
+
+  var $uploadCrop;
+
+  function readFile(input) {
+  console.log(input);
+    if (input.files && input.files[0]) {
+      if (/^image/.test(input.files[0].type)) { // only image file
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('.upload-demo').addClass('ready');
+          $uploadCrop.croppie('bind', {
+            url: e.target.result
+          }).then(function() {
+            console.log('jQuery bind complete');
+          });
+
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        alert("You may only select image files");
+      }
+    } else {
+      alert("Sorry - you're browser doesn't support the FileReader API");
+    }
+  }
+
+  $(".reset").trigger("click");
+
+
+  $('#upload').on('change', function() {
+  alert();
+    readFile(this);
+  });
+  $('.upload-result').on('click', function(ev) {
+    $uploadCrop.croppie('result', {
+      type: 'base64',
+      size: 'jpeg'
+    }).then(function(resp) {
+      $("#img_sample").attr("src", resp);
+    });
+  });
+
+});
+
+	 </script>
+	 <style>
+	 
+	 #imagePreview {
+    width: 180px;
+    height: 180px;
+    background-position: center center;
+    background-size: cover;
+    -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+    display: inline-block;
+}
+.upload-msg {
+    text-align: center;
+    padding-top: 100px;
+	padding-left:30px;
+	padding-right: 30px;
+    font-size: 22px;
+    color: #aaa;
+    width: 240px;
+	height: 200px;
+    margin: 10px auto;
+    border: 1px solid #aaa;
+}
+.upload-demo.ready #upload-demo{
+    display: block;
+}
+.upload-demo.ready .buttons .upload-result, .upload-demo.ready .buttons .reset {
+	display:inline;
+}
+.upload-demo #upload-demo, .upload-demo .buttons .upload-result, .upload-demo .buttons .reset, .upload-demo.ready .upload-msg {
+    display: none;
+}
+#upload{
+	position:absolute;
+	top:-1000px;
+}
+
+#btn{
+    background-color: #189094;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: none;
+    cursor: pointer;
+	width: auto;
+	margin: 0 auto;
+}
+	 </style>
+</html>
