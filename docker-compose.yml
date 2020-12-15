@@ -5,8 +5,7 @@ services:
     build: 
       context: ./bin/webserver
     container_name: 'admin-container'
-    restart: 'always'
-	
+    restart: 'always'	
     volumes: 
       - ${DOCUMENT_ROOT-./www}:/var/www/
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
