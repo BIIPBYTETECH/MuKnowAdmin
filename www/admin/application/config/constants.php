@@ -33,7 +33,7 @@ defined('DIR_WRITE_MODE')  OR define('DIR_WRITE_MODE', 0755);
 $root = "http://".$_SERVER['HTTP_HOST'];
 $root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 
-define('admin_url','http://muknow.biipbyte.co/');
+define('admin_url','http://admin.mu-know.com:1234/');
 
 /*
 |--------------------------------------------------------------------------
